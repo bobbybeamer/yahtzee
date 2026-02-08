@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Over - Yahtzee</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .game-over-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .trophy-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .game-over-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .winner-section {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+        }
+
+        .winner-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .winner-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+
+        .winner-score {
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        .scores-section {
+            margin-bottom: 30px;
+        }
+
+        .scores-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .scores-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .score-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .score-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .player-score {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .game-over-card {
+                padding: 30px 20px;
+            }
+
+            .game-over-title {
+                font-size: 2rem;
+            }
+
+            .trophy-emoji {
+                font-size: 3rem;
+            }
+
+            .winner-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-over-card">
+            <div class="trophy-emoji">🏆</div>
+            <h1 class="game-over-title">Game Over!</h1>
+            <p class="subtitle">Congratulations to our champion!</p>
+
+            <div class="winner-section">
+                <div class="winner-title">🎉 Winner</div>
+                <div class="winner-name">{{ winner.0 }}</div>
+                <div class="winner-score">{{ winner.1 }} points</div>
+            </div>
+
+            <div class="scores-section">
+                <h2 class="scores-title">📊 Final Scores</h2>
+                <ul class="scores-list">
+                    {% for name, score in final_scores %}
+                        <li class="score-item">
+                            <span class="player-name">{{ name }}</span>
+                            <span class="player-score">{{ score }} points</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <a href="{% url 'start_game' %}" class="btn">🎲 Play Again</a>
+            <div style="margin-top: 15px;">
+                <a href="{% url 'rules' %}" style="color: #667eea; font-weight: bold; text-decoration: none;">📋 View Rules & Tips</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

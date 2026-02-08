@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Yahtzee Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .start-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .game-title {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .dice-emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .toggle-row input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .player-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .player-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+        }
+
+        .rules-preview {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 12px;
+            border: 2px solid #ffb6c1;
+        }
+
+        .rules-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .rules-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .start-card {
+                padding: 30px 20px;
+            }
+
+            .game-title {
+                font-size: 2.5rem;
+            }
+
+            .dice-emoji {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="start-card">
+            <div class="dice-emoji">🎲</div>
+            <h1 class="game-title">Yahtzee</h1>
+            <p class="subtitle">Roll the dice and score the best combinations in this classic game!</p>
+
+            <form method="post" action="/start/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="num_players" class="form-label">Number of Players (1-6):</label>
+                    <input type="number" id="num_players" name="num_players" min="1" max="6" value="1" class="player-input">
+                </div>
+                <div class="toggle-row">
+                    <input type="checkbox" id="vs_ai" name="vs_ai">
+                    <label for="vs_ai" class="toggle-label">Play vs Computer</label>
+                </div>
+                <button type="submit" class="btn">Start Game</button>
+            </form>
+
+            <div class="rules-preview">
+                <div class="rules-title">🎯 How to Play:</div>
+                <div class="rules-text">
+                    Roll 5 dice up to 3 times per turn. Choose which dice to keep between rolls.
+                    Score in different categories to achieve the highest total score!
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="{% url 'rules' %}" style="color: #667eea; font-weight: bold; text-decoration: none;">📋 View Full Rules & Tips →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

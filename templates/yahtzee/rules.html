@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yahtzee Rules & Tips</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #e8e8e8;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .subsection-title {
+            font-size: 1.3rem;
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .category-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .category-table th,
+        .category-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .category-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .category-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 4px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .tip-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .strategy-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 4px solid #ee5a24;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.6);
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎲 Yahtzee Rules & Tips</h1>
+            <p class="subtitle">Master the classic dice game!</p>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">📋 Game Overview</h2>
+            <p>
+                Yahtzee is a dice game where players roll five dice to make specific combinations. 
+                The goal is to score the most points by rolling different combinations over 13 rounds.
+            </p>
+            <p>
+                <strong>Players:</strong> 1-6 players<br>
+                <strong>Rounds:</strong> 13 rounds per game<br>
+                <strong>Rolls per turn:</strong> Up to 3 rolls
+            </p>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">🎯 How to Play</h2>
+            
+            <h3 class="subsection-title">Turn Structure</h3>
+            <ol>
+                <li><strong>First Roll:</strong> Roll all 5 dice</li>
+                <li><strong>Keep or Reroll:</strong> Choose which dice to keep and which to reroll (up to 2 more times)</li>
+                <li><strong>Score:</strong> After your third roll (or earlier if satisfied), choose a category to score in</li>
+                <li><strong>Next Player:</strong> Play passes to the next player</li>
+            </ol>
+
+            <h3 class="subsection-title">Keeping Dice</h3>
+            <p>
+                Between rolls, select dice you want to keep by checking the boxes. Unchecked dice will be rerolled. 
+                You can change which dice to keep between each roll.
+            </p>
+
+            <div class="tip-box">
+                <div class="tip-title">💡 Tip:</div>
+                You don't have to use all 3 rolls! If you're happy with your dice after roll 1 or 2, you can score immediately.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">📊 Scoring Categories</h2>
+
+            <h3 class="subsection-title">Upper Section (Simple)</h3>
+            <p>Score the <strong>sum of dice</strong> showing that number:</p>
+            
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ones</strong></td>
+                        <td>Sum of all 1s</td>
+                        <td>1-1-3-1-5</td>
+                        <td>3 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Twos</strong></td>
+                        <td>Sum of all 2s</td>
+                        <td>2-2-4-2-6</td>
+                        <td>6 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Threes</strong></td>
+                        <td>Sum of all 3s</td>
+                        <td>3-3-3-5-1</td>
+                        <td>9 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fours</strong></td>
+                        <td>Sum of all 4s</td>
+                        <td>4-4-4-4-2</td>
+                        <td>16 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fives</strong></td>
+                        <td>Sum of all 5s</td>
+                        <td>5-5-6-5-3</td>
+                        <td>15 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sixes</strong></td>
+                        <td>Sum of all 6s</td>
+                        <td>6-6-6-2-3</td>
+                        <td>18 points</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <div class="tip-title">🎁 Upper Section Bonus:</div>
+                If your upper section total is 63 or more, you get a <strong>35-point bonus</strong>! 
+                (That's an average of 3 per category)
+            </div>
+
+            <h3 class="subsection-title">Lower Section (Combinations)</h3>
+            
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Three of a Kind</strong></td>
+                        <td>At least 3 dice the same</td>
+                        <td>4-4-4-2-6</td>
+                        <td>Sum of all dice (20)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Four of a Kind</strong></td>
+                        <td>At least 4 dice the same</td>
+                        <td>5-5-5-5-3</td>
+                        <td>Sum of all dice (23)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Full House</strong></td>
+                        <td>3 of one number + 2 of another</td>
+                        <td>3-3-3-6-6</td>
+                        <td>25 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Small Straight</strong></td>
+                        <td>4 consecutive numbers</td>
+                        <td>1-2-3-4-6 or 2-3-4-5-1</td>
+                        <td>30 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Large Straight</strong></td>
+                        <td>5 consecutive numbers</td>
+                        <td>1-2-3-4-5 or 2-3-4-5-6</td>
+                        <td>40 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yahtzee</strong></td>
+                        <td>All 5 dice the same</td>
+                        <td>6-6-6-6-6</td>
+                        <td>50 points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chance</strong></td>
+                        <td>Any combination</td>
+                        <td>1-3-4-5-6</td>
+                        <td>Sum of all dice (19)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <div class="tip-title">🎉 Yahtzee Bonus:</div>
+                If you score a second Yahtzee (after already scoring 50 in the Yahtzee box), you get an extra <strong>100 points</strong>!
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">🧠 Strategy Tips</h2>
+
+            <div class="strategy-box">
+                <div class="tip-title"><span class="emoji">🎯</span> Upper Section Strategy</div>
+                <ul>
+                    <li>Aim for at least 3 of each number (3×1=3, 3×2=6, 3×3=9, etc.)</li>
+                    <li>Focus on high numbers (4s, 5s, 6s) early for easier bonus</li>
+                    <li>Don't waste good rolls on low-value upper categories</li>
+                </ul>
+            </div>
+
+            <div class="strategy-box">
+                <div class="tip-title"><span class="emoji">🎲</span> Lower Section Strategy</div>
+                <ul>
+                    <li><strong>Yahtzee (50 pts):</strong> Rare! Don't chase it unless you have 3-4 matching dice</li>
+                    <li><strong>Large Straight (40 pts):</strong> Hard to get, but valuable</li>
+                    <li><strong>Full House (25 pts):</strong> Look for pairs and three-of-a-kinds</li>
+                    <li><strong>Chance:</strong> Use as a backup for poor rolls, especially high totals</li>
+                </ul>
+            </div>
+
+            <div class="strategy-box">
+                <div class="tip-title"><span class="emoji">🎖️</span> General Strategy</div>
+                <ul>
+                    <li>Keep your options open early in the game</li>
+                    <li>Use "Chance" or low upper categories as throwaway boxes for bad rolls</li>
+                    <li>Focus on completing the upper section bonus (63+ points)</li>
+                    <li>After your first roll, decide on a target category and keep relevant dice</li>
+                    <li>In the late game, take safe points rather than gambling</li>
+                    <li>If forced to take a zero, use it on a category you're unlikely to complete well</li>
+                </ul>
+            </div>
+
+            <div class="strategy-box">
+                <div class="tip-title"><span class="emoji">📈</span> Probability Tips</div>
+                <ul>
+                    <li>With 2 rolls left, the chance of getting a specific number is about 75%</li>
+                    <li>Small straights are more common than you think (look for 4 in a row)</li>
+                    <li>Three of a kind with 3 dice kept gives ~50% chance of getting four of a kind</li>
+                    <li>If you have 4 matching dice, go for Yahtzee—you have a 1/6 chance!</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">⚠️ Common Mistakes</h2>
+            <ul>
+                <li><strong>Chasing Yahtzee too early:</strong> Don't waste turns trying for 50 points when you could secure other points</li>
+                <li><strong>Ignoring the upper bonus:</strong> That 35-point bonus is huge!</li>
+                <li><strong>Filling high-scoring categories early:</strong> Save them for when you actually have good rolls</li>
+                <li><strong>Not using Chance wisely:</strong> It's a great safety net for high-value poor rolls</li>
+                <li><strong>Keeping too many dice:</strong> Sometimes you need to break up a pair to go for a straight</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">🏆 Winning the Game</h2>
+            <p>
+                After all players complete 13 rounds, total up:
+            </p>
+            <ul>
+                <li>Upper section scores</li>
+                <li>Upper section bonus (35 points if total ≥ 63)</li>
+                <li>Lower section scores</li>
+                <li>Yahtzee bonuses (100 points each)</li>
+            </ul>
+            <p><strong>The player with the highest total wins!</strong></p>
+            
+            <div class="tip-box">
+                <div class="tip-title">🎯 Average Scores:</div>
+                <ul>
+                    <li><strong>Beginner:</strong> 150-200 points</li>
+                    <li><strong>Intermediate:</strong> 200-250 points</li>
+                    <li><strong>Expert:</strong> 250-300+ points</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="{% url 'index' %}" class="btn">⬅️ Back to Game</a>
+            <a href="{% url 'start_game' %}" class="btn" style="margin-left: 10px;">🎲 Start New Game</a>
+        </div>
+    </div>
+</body>
+</html>
