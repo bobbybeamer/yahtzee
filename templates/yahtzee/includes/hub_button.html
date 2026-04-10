@@ -1,0 +1,25 @@
+<style>
+    .hub-btn {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.55);
+        color: white;
+        text-decoration: none;
+        padding: 8px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: background 0.2s ease, transform 0.2s ease;
+        white-space: nowrap;
+    }
+    .hub-btn:hover {
+        background: rgba(0, 0, 0, 0.8);
+        transform: translateY(-1px);
+    }
+</style>
+<a href="{% url 'home' %}" class="hub-btn">&#8962; Game Hub</a>

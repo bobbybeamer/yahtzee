@@ -1,0 +1,21 @@
+import os
+import sys
+from pathlib import Path
+
+
+USERNAME = 'your-pythonanywhere-username'
+PROJECT_NAME = 'yahtzee'
+
+project_home = Path(f'/home/{USERNAME}/{PROJECT_NAME}')
+if str(project_home) not in sys.path:
+    sys.path.insert(0, str(project_home))
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+os.environ.setdefault('DJANGO_DEBUG', 'False')
+os.environ.setdefault('ALLOWED_HOSTS', f'{USERNAME}.pythonanywhere.com')
+os.environ.setdefault('SITE_URL', f'https://{USERNAME}.pythonanywhere.com')
+os.environ.setdefault('SECRET_KEY', 'replace-this-with-a-real-secret-key')
+
+from django.core.wsgi import get_wsgi_application
+
+application = get_wsgi_application()

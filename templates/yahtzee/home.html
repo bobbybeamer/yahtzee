@@ -1,0 +1,148 @@
+{% extends 'yahtzee/base.html' %}
+
+{% block page_styles %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .hub {
+            max-width: 700px;
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .hub-title {
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #e0e0e0, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hub-subtitle {
+            font-size: 1rem;
+            color: #8899bb;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .intro-copy {
+            max-width: 620px;
+            margin: 0 auto 35px;
+            color: #dbe5ff;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .intro-copy a {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .game-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .game-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .game-desc {
+            font-size: 0.9rem;
+            color: #8899bb;
+            line-height: 1.5;
+        }
+
+        .game-card.yahtzee {
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .game-card.yahtzee:hover {
+            border-color: rgba(102, 126, 234, 0.8);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+        }
+
+        .game-card.maths {
+            border-color: rgba(168, 237, 234, 0.3);
+        }
+
+        .game-card.maths:hover {
+            border-color: rgba(168, 237, 234, 0.7);
+            box-shadow: 0 12px 40px rgba(168, 237, 234, 0.15);
+        }
+
+        @media (max-width: 480px) {
+            .hub-title {
+                font-size: 2.2rem;
+            }
+        }
+{% endblock %}
+
+{% block content %}
+    <div class="hub">
+        <h1 class="hub-title">Game Hub</h1>
+        <p class="hub-subtitle">Play browser games and puzzles</p>
+        <p class="intro-copy">
+            Play <strong>Yahtzee online</strong> in your browser with automatic scoring, or switch to <strong>The Maths Square</strong> for a quick addition challenge.
+            If you are new to Yahtzee, you can also read the <a href="{% url 'rules' %}">rules and scoring guide</a> before you start.
+        </p>
+
+        <div class="games-grid">
+            <a href="{% url 'index' %}" class="game-card yahtzee">
+                <div class="game-icon">🎲</div>
+                <div class="game-name">Yahtzee</div>
+                <div class="game-desc">Roll the dice and score the best combinations in this classic game.</div>
+            </a>
+
+            <a href="{% url 'maths_square' %}" class="game-card maths">
+                <div class="game-icon">🔢</div>
+                <div class="game-name">Maths Square</div>
+                <div class="game-desc">Fill the grid so every row and column adds up correctly.</div>
+            </a>
+        </div>
+    </div>
+{% endblock %}

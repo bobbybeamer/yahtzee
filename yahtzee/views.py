@@ -1,12 +1,29 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.urls import reverse
+from pathlib import Path
 from .models import Game, Player
+from .seo import absolute_url, named_url
 from .utils import roll_dice, score_category, get_available_categories, suggest_action, initialize_game_categories, CATEGORIES, UPPER_CATEGORIES, calculate_upper_bonus, choose_ai_keep_indices, choose_ai_category
 import json
+from xml.sax.saxutils import escape
 
 # Yahtzee game views
 # Demonstrates how Django views handle HTTP requests and interact with models
 # Shows server-side game state management
+
+
+def build_seo_context(request, *, title, description, robots='index,follow', canonical_name=None, schema=None):
+    canonical_url = named_url(request, canonical_name) if canonical_name else absolute_url(request)
+    context = {
+        'meta_title': title,
+        'meta_description': description,
+        'meta_robots': robots,
+        'canonical_url': canonical_url,
+    }
+    if schema is not None:
+        context['schema_json'] = json.dumps(schema)
+    return context
 
 
 def run_ai_turns(game):
@@ -69,7 +86,41 @@ def run_ai_turns(game):
         current_player = game.current_player()
         game.save()
 
+def home(request):
+    seo_context = build_seo_context(
+        request,
+        title='Play Yahtzee Online and Maths Games | Game Hub',
+        description='Play Yahtzee in your browser, read the rules, and try The Maths Square addition puzzle in Game Hub.',
+        schema={
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            'name': 'Game Hub',
+            'url': named_url(request, 'home'),
+            'description': 'A browser-based game hub featuring Yahtzee and The Maths Square.',
+        },
+    )
+    return render(request, 'yahtzee/home.html', seo_context)
+
+
 def index(request):
+    context = build_seo_context(
+        request,
+        title='Play Yahtzee Online | Game Hub',
+        description='Start a browser-based Yahtzee game, play solo or against the computer, and keep score automatically.',
+        canonical_name='index',
+        schema={
+            '@context': 'https://schema.org',
+            '@type': 'Game',
+            'name': 'Yahtzee',
+            'url': named_url(request, 'index'),
+            'description': 'Play Yahtzee online in your browser with automatic scoring.',
+            'genre': 'Dice game',
+        },
+    )
+    return render(request, 'yahtzee/start.html', context)
+
+
+def play_game(request):
     """
     Main game page. Shows current game state or allows starting a new game.
     """
@@ -80,7 +131,7 @@ def index(request):
 
     players = game.players.all()
     if not players:
-        return render(request, 'yahtzee/start.html')
+        return redirect('index')
 
     run_ai_turns(game)
     game.refresh_from_db()
@@ -102,6 +153,12 @@ def index(request):
         'categories': CATEGORIES,
         'category_scores': {cat: score_category(game.dice, cat) for cat in CATEGORIES} if game.dice else {},
     }
+    context.update(build_seo_context(
+        request,
+        title='Yahtzee Game in Progress | Game Hub',
+        description='Live Yahtzee gameplay and score tracking.',
+        robots='noindex,nofollow',
+    ))
     return render(request, 'yahtzee/game.html', context)
 
 def start_game(request):
@@ -126,8 +183,8 @@ def start_game(request):
                 game.players.add(player)
         game.save()
         game.reset_turn()  # Initialize dice for the first turn
-        return redirect('/')
-    return render(request, 'yahtzee/start.html')
+        return redirect('play_game')
+    return redirect('index')
 
 def roll_dice_view(request):
     """
@@ -137,7 +194,7 @@ def roll_dice_view(request):
     current_player = game.current_player()
     if current_player and current_player.is_ai:
         run_ai_turns(game)
-        return redirect('/')
+        return redirect('play_game')
 
     if request.method == 'POST' and game.rolls_left > 0:
         # Clear AI action log when human player moves
@@ -149,7 +206,7 @@ def roll_dice_view(request):
         game.save()
         # Roll the dice
         game.roll_dice()
-    return redirect('/')
+    return redirect('play_game')
 
 def choose_category(request):
     """
@@ -160,7 +217,7 @@ def choose_category(request):
     current_player = game.current_player()
     if current_player and current_player.is_ai:
         run_ai_turns(game)
-        return redirect('/')
+        return redirect('play_game')
 
     if request.method == 'POST' and current_player:
         category = request.POST.get('category')
@@ -183,7 +240,7 @@ def choose_category(request):
             game.save()
             if game.is_game_over():
                 return redirect('game_over')
-    return redirect('/')
+    return redirect('play_game')
 
 def game_over(request):
     """
@@ -197,6 +254,12 @@ def game_over(request):
         'final_scores': final_scores,
         'winner': winner,
     }
+    context.update(build_seo_context(
+        request,
+        title='Yahtzee Game Over | Game Hub',
+        description='Final Yahtzee scores from a completed match.',
+        robots='noindex,nofollow',
+    ))
     return render(request, 'yahtzee/game_over.html', context)
 
 
@@ -204,4 +267,133 @@ def rules(request):
     """
     Display game rules and tips page.
     """
-    return render(request, 'yahtzee/rules.html')
+    context = build_seo_context(
+        request,
+        title='Yahtzee Rules, Scoring, and Tips | Game Hub',
+        description='Learn official Yahtzee rules, scoring categories, bonuses, and practical strategy tips for better games.',
+        schema={
+            '@context': 'https://schema.org',
+            '@graph': [
+                {
+                    '@type': 'Article',
+                    'headline': 'Yahtzee Rules, Scoring, and Tips',
+                    'description': 'A guide to Yahtzee rules, scoring categories, and strategy tips.',
+                    'url': named_url(request, 'rules'),
+                },
+                {
+                    '@type': 'FAQPage',
+                    'mainEntity': [
+                        {
+                            '@type': 'Question',
+                            'name': 'How many dice do you roll in Yahtzee?',
+                            'acceptedAnswer': {
+                                '@type': 'Answer',
+                                'text': 'Players roll five dice in Yahtzee and can roll up to three times on each turn.'
+                            }
+                        },
+                        {
+                            '@type': 'Question',
+                            'name': 'How does scoring work in Yahtzee?',
+                            'acceptedAnswer': {
+                                '@type': 'Answer',
+                                'text': 'Players score one category per turn across the upper and lower sections, aiming for the highest total after 13 rounds.'
+                            }
+                        },
+                        {
+                            '@type': 'Question',
+                            'name': 'What is the upper section bonus in Yahtzee?',
+                            'acceptedAnswer': {
+                                '@type': 'Answer',
+                                'text': 'If the total of ones through sixes reaches at least 63 points, the player earns a 35-point upper section bonus.'
+                            }
+                        },
+                        {
+                            '@type': 'Question',
+                            'name': 'Can you play Yahtzee online against the computer on this site?',
+                            'acceptedAnswer': {
+                                '@type': 'Answer',
+                                'text': 'Yes. The Yahtzee game on this site supports solo play and a mode against the computer.'
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+    )
+    return render(request, 'yahtzee/rules.html', context)
+
+
+def maths_square(request):
+    """
+    Display the Maths Square addition game.
+    """
+    context = build_seo_context(
+        request,
+        title='The Maths Square Addition Game | Game Hub',
+        description='Play The Maths Square, a quick browser-based addition puzzle for practicing mental maths.',
+        schema={
+            '@context': 'https://schema.org',
+            '@type': 'Game',
+            'name': 'The Maths Square',
+            'url': named_url(request, 'maths_square'),
+            'description': 'A browser-based addition puzzle with a 10x10 practice grid.',
+            'genre': 'Educational game',
+        },
+    )
+    return render(request, 'yahtzee/maths_square.html', context)
+
+
+def robots_txt(request):
+    lines = [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /yahtzee/start/',
+        'Disallow: /yahtzee/roll/',
+        'Disallow: /yahtzee/choose/',
+        'Disallow: /yahtzee/game_over/',
+        f'Sitemap: {named_url(request, "sitemap_xml")}',
+    ]
+    return HttpResponse('\n'.join(lines), content_type='text/plain')
+
+
+def sitemap_xml(request):
+    pages = [
+        ('home', 'daily', '1.0'),
+        ('index', 'weekly', '0.9'),
+        ('rules', 'monthly', '0.8'),
+        ('maths_square', 'weekly', '0.7'),
+    ]
+    entries = []
+    for name, changefreq, priority in pages:
+        location = escape(named_url(request, name))
+        entries.append(
+            '  <url>\n'
+            f'    <loc>{location}</loc>\n'
+            f'    <changefreq>{changefreq}</changefreq>\n'
+            f'    <priority>{priority}</priority>\n'
+            '  </url>'
+        )
+
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + '\n'.join(entries)
+        + '\n</urlset>'
+    )
+    return HttpResponse(xml, content_type='application/xml')
+
+
+def social_preview_svg(request):
+    svg_path = Path(__file__).resolve().parent / 'static' / 'yahtzee' / 'social-preview.svg'
+    return HttpResponse(svg_path.read_text(encoding='utf-8'), content_type='image/svg+xml')
+
+
+def favicon_svg(request):
+    svg_path = Path(__file__).resolve().parent / 'static' / 'yahtzee' / 'favicon.svg'
+    return HttpResponse(svg_path.read_text(encoding='utf-8'), content_type='image/svg+xml')
+
+
+def favicon_ico(request):
+    response = redirect('favicon_svg')
+    response.status_code = 301
+    return response

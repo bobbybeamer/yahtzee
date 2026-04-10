@@ -1,5 +1,79 @@
 # Yahtzee Game Development Notes
 
+## SEO Deployment Note
+
+Set `SITE_URL` in production so canonical tags, sitemap links, and social metadata use your real domain instead of the current request host.
+
+```bash
+export SITE_URL=https://example.com
+python manage.py runserver
+```
+
+## Production Settings
+
+This project now reads deployment-sensitive settings from environment variables.
+
+Minimum production configuration:
+
+```bash
+export DJANGO_DEBUG=False
+export SECRET_KEY='replace-with-a-long-random-secret-key'
+export ALLOWED_HOSTS=example.com,www.example.com
+export SITE_URL=https://example.com
+python manage.py check --deploy
+```
+
+See [.env.example](/Users/benballester/yahtzee/.env.example) for the full set of supported deployment variables.
+
+Static files now collect into `staticfiles/`, so production deployment should include:
+
+```bash
+python manage.py collectstatic
+```
+
+## PythonAnywhere Deployment
+
+This project is prepared for a basic PythonAnywhere deployment.
+
+Files added for that workflow:
+
+- [requirements.txt](/Users/benballester/yahtzee/requirements.txt)
+- [pythonanywhere_wsgi.py.example](/Users/benballester/yahtzee/pythonanywhere_wsgi.py.example)
+
+Recommended setup steps:
+
+```bash
+# On PythonAnywhere Bash console
+git clone <your-repo-url> yahtzee
+cd yahtzee
+python3.13 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+export DJANGO_DEBUG=False
+export SECRET_KEY='replace-with-a-long-random-secret-key'
+export ALLOWED_HOSTS=yourusername.pythonanywhere.com
+export SITE_URL=https://yourusername.pythonanywhere.com
+
+python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py check --deploy
+```
+
+In the PythonAnywhere Web tab:
+
+1. Create a new web app using manual configuration.
+2. Point the virtualenv to `/home/yourusername/yahtzee/.venv`.
+3. Replace the generated WSGI file with the contents of [pythonanywhere_wsgi.py.example](/Users/benballester/yahtzee/pythonanywhere_wsgi.py.example), updating the username and secret key.
+4. Add a static files mapping from `/static/` to `/home/yourusername/yahtzee/staticfiles`.
+5. Reload the web app.
+
+Notes:
+
+- SQLite is fine for a small hobby deployment on PythonAnywhere, but it is still a single-file database.
+- If you change environment variables in the WSGI config, reload the app after saving.
+- Keep `SITE_URL` set to the final public URL so canonical tags and sitemap links stay correct.
+
 ## Architecture Overview
 
 ### Database Layer (Models)

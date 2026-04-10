@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yahtzee Rules & Tips</title>
-    <style>
+{% extends 'yahtzee/base.html' %}
+
+{% block page_styles %}
         * {
             margin: 0;
             padding: 0;
@@ -165,9 +161,13 @@
                 font-size: 1.5rem;
             }
         }
-    </style>
-</head>
-<body>
+{% endblock %}
+
+{% block page_chrome %}
+    {% include 'yahtzee/includes/hub_button.html' %}
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="header">
             <h1 class="title">🎲 Yahtzee Rules & Tips</h1>
@@ -414,9 +414,8 @@
         </div>
 
         <div class="btn-container">
-            <a href="{% url 'index' %}" class="btn">⬅️ Back to Game</a>
-            <a href="{% url 'start_game' %}" class="btn" style="margin-left: 10px;">🎲 Start New Game</a>
+            <a href="{% url 'index' %}" class="btn">🎲 Play Yahtzee</a>
+            <a href="{% url 'play_game' %}" class="btn" style="margin-left: 10px;">⬅️ Resume Game</a>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

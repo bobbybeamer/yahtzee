@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start Yahtzee Game</title>
-    <style>
+{% extends 'yahtzee/base.html' %}
+
+{% block page_styles %}
         * {
             margin: 0;
             padding: 0;
@@ -129,6 +125,23 @@
             border: 2px solid #ffb6c1;
         }
 
+        .seo-copy {
+            margin-top: 24px;
+            text-align: left;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .seo-copy h2 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .seo-copy p {
+            margin-bottom: 12px;
+        }
+
         .rules-title {
             font-size: 1rem;
             font-weight: bold;
@@ -159,16 +172,20 @@
                 font-size: 3rem;
             }
         }
-    </style>
-</head>
-<body>
+{% endblock %}
+
+{% block page_chrome %}
+    {% include 'yahtzee/includes/hub_button.html' %}
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="start-card">
             <div class="dice-emoji">🎲</div>
             <h1 class="game-title">Yahtzee</h1>
-            <p class="subtitle">Roll the dice and score the best combinations in this classic game!</p>
+            <p class="subtitle">Play Yahtzee online, keep score automatically, and challenge a friend or the computer.</p>
 
-            <form method="post" action="/start/">
+            <form method="post" action="{% url 'start_game' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="num_players" class="form-label">Number of Players (1-6):</label>
@@ -191,7 +208,35 @@
                     <a href="{% url 'rules' %}" style="color: #667eea; font-weight: bold; text-decoration: none;">📋 View Full Rules & Tips →</a>
                 </div>
             </div>
+
+            <div class="seo-copy">
+                <h2>Play Yahtzee Online</h2>
+                <p>
+                    This browser version of Yahtzee lets you start a game quickly without downloads, track every score automatically, and play either solo or against an AI opponent.
+                </p>
+                <p>
+                    If you want to improve your play, visit the <a href="{% url 'rules' %}" style="color: #667eea; font-weight: bold;">Yahtzee rules and scoring guide</a> to review combinations, upper-section bonuses, and general strategy.
+                </p>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 25px; border-top: 2px solid #eee;">
+                <p style="font-size: 1rem; color: #888; margin-bottom: 15px;">Or try another game:</p>
+                <a href="{% url 'maths_square' %}" style="
+                    display: block;
+                    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+                    border: 2px solid #764ba2;
+                    border-radius: 15px;
+                    padding: 15px 20px;
+                    text-decoration: none;
+                    color: #764ba2;
+                    font-weight: bold;
+                    font-size: 1.1rem;
+                    transition: all 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                    🎯 The Maths Square →
+                    <div style="font-size: 0.85rem; color: #888; font-weight: normal; margin-top: 4px;">Addition challenge grid game</div>
+                </a>
+            </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}

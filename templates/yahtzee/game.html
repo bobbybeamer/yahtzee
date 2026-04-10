@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yahtzee Game</title>
-    <style>
+{% extends 'yahtzee/base.html' %}
+
+{% block page_styles %}
         /* Modern Yahtzee Game Styling */
         * {
             margin: 0;
@@ -439,9 +435,13 @@
                 font-size: 0.9rem;
             }
         }
-    </style>
-</head>
-<body>
+{% endblock %}
+
+{% block page_chrome %}
+    {% include 'yahtzee/includes/hub_button.html' %}
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <div class="game-header">
             <h1 class="game-title">🎲 Yahtzee</h1>
@@ -454,7 +454,7 @@
             <!-- If no players, show start link -->
             <div class="game-card">
                 <div class="action-buttons">
-                    <a href="{% url 'start_game' %}" class="btn btn-primary">Start New Game</a>
+                    <a href="{% url 'index' %}" class="btn btn-primary">Start New Game</a>
                 </div>
             </div>
         {% else %}
@@ -594,12 +594,14 @@
             </div>
 
             <div class="new-game-link">
-                <a href="{% url 'start_game' %}">🔄 New Game</a> |
+                <a href="{% url 'index' %}">🔄 New Game</a> |
                 <a href="{% url 'rules' %}">📋 Rules & Tips</a>
             </div>
         {% endif %}
     </div>
+{% endblock %}
 
+{% block scripts %}
     <script>
         // Animate dice rolling and bouncing
         document.addEventListener('DOMContentLoaded', function() {
@@ -660,5 +662,4 @@
             });
         });
     </script>
-</body>
-</html>
+{% endblock %}

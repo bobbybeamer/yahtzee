@@ -1,0 +1,23 @@
+{% with resolved_title=meta_title|default:'Play Yahtzee Online and Puzzle Games | Game Hub' resolved_description=meta_description|default:'Play Yahtzee online, learn the rules, and try a quick maths puzzle in Game Hub.' resolved_robots=meta_robots|default:'index,follow' resolved_type=og_type|default:'website' resolved_canonical=canonical_url|default:current_absolute_url resolved_image=meta_image_url|default:default_social_image_url resolved_image_alt=meta_image_alt|default:default_social_image_alt %}
+<title>{{ resolved_title }}</title>
+<meta name="description" content="{{ resolved_description }}">
+<meta name="robots" content="{{ resolved_robots }}">
+<meta name="theme-color" content="#2d4f8f">
+<link rel="icon" href="{{ default_favicon_url }}" type="image/svg+xml">
+<link rel="shortcut icon" href="{{ default_favicon_url }}" type="image/svg+xml">
+<link rel="canonical" href="{{ resolved_canonical }}">
+<meta property="og:site_name" content="{{ site_name }}">
+<meta property="og:title" content="{{ resolved_title }}">
+<meta property="og:description" content="{{ resolved_description }}">
+<meta property="og:type" content="{{ resolved_type }}">
+<meta property="og:url" content="{{ resolved_canonical }}">
+<meta property="og:image" content="{{ resolved_image }}">
+<meta property="og:image:alt" content="{{ resolved_image_alt }}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ resolved_title }}">
+<meta name="twitter:description" content="{{ resolved_description }}">
+<meta name="twitter:image" content="{{ resolved_image }}">
+{% if schema_json %}
+<script type="application/ld+json">{{ schema_json|safe }}</script>
+{% endif %}
+{% endwith %}

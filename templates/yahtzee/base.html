@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block meta_charset %}
+    <meta charset="UTF-8">
+    {% endblock %}
+    {% block viewport %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+    {% include 'yahtzee/includes/seo_meta.html' %}
+    {% block external_assets %}{% endblock %}
+    <style>
+    {% block page_styles %}{% endblock %}
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block page_chrome %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>
